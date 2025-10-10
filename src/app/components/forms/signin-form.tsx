@@ -85,7 +85,7 @@ export function SigninForm() {
                 id="identifier"
                 name="identifier"
                 type="text"
-                placeholder="username or email"
+                placeholder="email"
               />
             </FieldGroup>
 

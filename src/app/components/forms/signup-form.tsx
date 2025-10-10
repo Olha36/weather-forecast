@@ -12,6 +12,16 @@ import {
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { actions } from '@/data/actions';
+import { useActionState } from 'react';
+import type { FormState } from '@/types/FormState';
+
+const INITIAL_STATE: FormState = {
+  success: false,
+  message: undefined,
+  strapiErrors: null,
+  zodErrors: null,
+};
 
 const Container = styled.div`
   display: flex;
@@ -74,9 +84,17 @@ const StyledLink = styled(Link)`
 `;
 
 export function SignupForm() {
+  const [formState, formAction] = useActionState(
+    actions.auth.registerUserAction,
+    INITIAL_STATE
+  );
+
+  console.log('## will render on client ##');
+  console.log(formState);
+  console.log('###########################');
   return (
     <Container>
-      <form>
+      <form action={formAction}>
         <Card>
           <Header>
             <Title>Sign Up</Title>
@@ -121,7 +139,6 @@ export function SignupForm() {
               <StyledLink href="signin"> Log In</StyledLink>
             </Prompt>
           </Footer>
-          
         </Card>
       </form>
     </Container>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 import { z } from 'zod';
 import { cookies } from 'next/headers';
@@ -9,8 +8,40 @@ import {
   loginUserService,
 } from '../services/auth-services';
 
+export type StrapiError = {
+  status: number;
+  name: string;
+  message: string;
+  details?: Record<string, string[]>;
+};
+
+export type FormStateRegister = {
+  success?: boolean;
+  message?: string;
+  data?: {
+    username?: string;
+    email?: string;
+    password?: string;
+  };
+  strapiErrors?: StrapiError | null;
+  zodErrors?: Record<'username' | 'email' | 'password', string[]> | null;
+  jwt?: string;
+};
+
+export type FormStateLogin = {
+  success?: boolean;
+  message?: string;
+  data?: {
+    identifier?: string;
+    password?: string;
+  };
+  strapiErrors?: StrapiError | null;
+  zodErrors?: Record<'identifier' | 'password', string[]> | null;
+  jwt?: string;
+};
+
 const config = {
-  maxAge: 60 * 60 * 24 * 7, // 1 week
+  maxAge: 60 * 60 * 24 * 7, 
   path: '/',
   domain: process.env.HOST ?? 'localhost',
   httpOnly: true,
@@ -29,7 +60,10 @@ const schemaRegister = z.object({
   }),
 });
 
-export async function registerUserAction(prevState: any, formData: FormData) {
+export async function registerUserAction(
+  prevState: FormStateRegister,
+  formData: FormData
+) {
   const validatedFields = schemaRegister.safeParse({
     username: formData.get('username'),
     password: formData.get('password'),
@@ -90,7 +124,7 @@ const schemaLogin = z.object({
     }),
 });
 
-export async function loginUserAction(prevState: any, formData: FormData) {
+export async function loginUserAction(prevState: FormStateLogin, formData: FormData) {
   const validatedFields = schemaLogin.safeParse({
     identifier: formData.get('identifier'),
     password: formData.get('password'),
