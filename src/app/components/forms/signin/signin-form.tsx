@@ -7,11 +7,11 @@ import {
   CardContent,
   CardFooter,
   Card,
-} from '../ui/card';
+} from '../../ui/card';
 
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import { Label } from '../../ui/label';
+import { Input } from '../../ui/input';
+import { Button } from '../../ui/button';
 import styled from 'styled-components';
 
 const Container = styled.div`
