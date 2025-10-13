@@ -7,40 +7,54 @@ import { Button } from '../../ui/Button';
 import { AuthForm } from '../auth/AuthForm';
 import Link from 'next/link';
 import { useState } from 'react';
+import { FormState } from '@/types/FormState';
+import { loginUserService } from '@/data/services/auth-services';
+
 
 type LoginFormInputs = { email: string; password: string };
 
 export function SigninForm() {
-  const [message, setMessage] = useState('');
+   const [formState, setFormState] = useState<FormState>({});
+   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      const res = await fetch('/api/auth/login', {
-        // call your Next.js API route
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, password: data.password }),
-      });
+ const onSubmit = async (data: LoginFormInputs) => {
+   setIsLoading(true);
+   setFormState({});
+   try {
+     const response = await loginUserService({
+       identifier: data.email,
+       password: data.password,
+     });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        setMessage('Login successful!');
-        // redirect manually
-        window.location.href = '/dashboard';
-      } else {
-        setMessage(result.message || 'Login failed');
-      }
-    } catch (err) {
-      if (err instanceof Error) setMessage(err.message);
-      else setMessage('Login failed');
-    }
-  };
+     if ('error' in response) {
+       setFormState({
+         success: false,
+         message: response.error.message,
+         strapiErrors: response.error,
+       });
+     } else {
+     
+       setFormState({ success: true, message: 'Login successful!' });
+       document.cookie = `jwt=${response.jwt}; path=/; max-age=${
+         60 * 60 * 24 * 7
+       }`;
+       window.location.href = '/';
+     }
+   } catch (err) {
+     if (err instanceof Error) {
+       setFormState({ success: false, message: err.message });
+     } else {
+       setFormState({ success: false, message: 'Login failed' });
+     }
+   } finally {
+     setIsLoading(false);
+   }
+ };
 
   return (
     <AuthForm
@@ -87,8 +101,20 @@ export function SigninForm() {
           )}
         </Box>
 
-        <Button type="submit">Sign In</Button>
-        {message && <p style={{ color: 'red' }}>{message}</p>}
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </Button>
+
+        {formState.strapiErrors && (
+          <Typography color="error">
+            {formState.strapiErrors.message || 'Something went wrong'}
+          </Typography>
+        )}
+        {formState.message && (
+          <Typography color={formState.success ? 'success.main' : 'error'}>
+            {formState.message}
+          </Typography>
+        )}
       </Box>
     </AuthForm>
   );
