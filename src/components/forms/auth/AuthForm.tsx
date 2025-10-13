@@ -4,7 +4,7 @@ import {
   Header,
   Content,
   Footer,
-} from '@/app/components/forms/auth/AuthForm.style';
+} from '@/components/forms/auth/AuthForm.style';
 import { Card } from '../../ui/Card';
 
 interface AuthContainerProps {
