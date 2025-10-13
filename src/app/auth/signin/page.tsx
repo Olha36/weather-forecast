@@ -1,4 +1,4 @@
-import { SigninForm } from '@/app/components/forms/signin/signin-form';
+import { SigninForm } from "@/app/components/forms/signin/SigninForm";
 
 export default function SignInRoute() {
   return (

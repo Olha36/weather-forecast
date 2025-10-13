@@ -37,7 +37,7 @@ export async function registerUserAction(
 
   console.log('Validation successful:', validatedFields.data);
 
-  // ✅ Call Strapi API
+
   const responseData = await services.auth.registerUserService(
     validatedFields.data
   );
