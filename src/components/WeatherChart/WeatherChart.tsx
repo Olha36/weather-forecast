@@ -73,7 +73,7 @@ export default function WeatherChart({ hourlyData }: WeatherChartProps) {
         data: temps,
         borderColor: '#ffb36c',
         backgroundColor: 'rgba(192, 75, 75, 0.2)',
-        fill: true,
+        fill: false,
         tension: 0.3,
         pointRadius: 4,
       },

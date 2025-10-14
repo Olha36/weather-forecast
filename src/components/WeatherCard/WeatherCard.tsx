@@ -79,10 +79,13 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
   const pageTotal = Math.ceil(data.length / cardPerPage);
 
   useEffect(() => {
-    if (data.length && onCardChange) {
-      onCardChange(data);
+    if (currentCards.length && onCardChange) {
+      const timeout = setTimeout(() => {
+        onCardChange(currentCards);
+      });
+      return () => clearTimeout(timeout);
     }
-  }, [data, onCardChange]);
+  }, [currentCards, onCardChange]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -142,9 +145,6 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setExpandedIndex(null);
-    const startIndex = (value - 1) * cardPerPage;
-    const newCard = data[startIndex];
-    if (onCardChange) onCardChange(newCard);
   };
 
   return (
