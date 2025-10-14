@@ -1,4 +1,4 @@
-import { useWeekWeather } from '@/hooks/useWeekWeather';
+import { useWeekWeather } from '@/lib/hooks/useWeekWeather';
 import { Box, Typography } from '@mui/material';
 
 export default function WeekForecast() {

@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../../api/weatherApi/weatherApi';
-import { useWeather } from '../../hooks/useWeather';
+import { useWeather } from '../../lib/hooks/useWeather';
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
 
 type WeatherDescription = {

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useNews } from '../../hooks/useNews';
+import { useNews } from '../../lib/hooks/useNews';
 
 export default function News() {
   const { data, loading, error } = useNews();
@@ -50,8 +50,8 @@ export default function News() {
                 backgroundColor: '#f0f0f0',
               }}
               onError={(e) => {
-                 const target = e.target as HTMLImageElement;
-                 target.src = 'https://picsum.photos/270/208?random=2';
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://picsum.photos/270/208?random=2';
               }}
             />
             <Typography
