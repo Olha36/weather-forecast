@@ -1,6 +1,6 @@
 'use client';
-import background from '../../assets/bg.png'
-import {Divider, Box} from '@mui/material';
+import background from '../../assets/bg.png';
+import { Divider, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
