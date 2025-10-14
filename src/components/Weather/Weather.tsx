@@ -7,6 +7,7 @@ import WeatherCard from '../WeatherCard/WeatherCard';
 import WeatherChart from '../WeatherChart/WeatherChart';
 import WeatherSearch from '../WeatherSearch/WeatherSearch';
 import WeekForecast from '../WeekForecast/WeekForecast';
+import News from '../News/News';
 
 const theme = createTheme({
   typography,
@@ -88,6 +89,7 @@ export default function Home() {
         <WeatherCard onCardChange={handleCardChange} />
         {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
         <WeekForecast />
+        <News />
       </main>
     </ThemeProvider>
   );

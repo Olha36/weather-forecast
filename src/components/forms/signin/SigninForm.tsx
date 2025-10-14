@@ -1,14 +1,14 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { loginUserService } from '@/data/services/auth-services';
+import { FormState } from '@/types/FormState';
 import { Box, Typography } from '@mui/material';
-import { Label } from '../../ui/Label';
-import { Input } from '../../ui/Input';
-import { Button } from '../../ui/Button';
-import { AuthForm } from '../auth/AuthForm';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FormState } from '@/types/FormState';
-import { loginUserService } from '@/data/services/auth-services';
+import { useForm } from 'react-hook-form';
+import { Button } from '../../ui/Button';
+import { Input } from '../../ui/Input';
+import { Label } from '../../ui/Label';
+import { AuthForm } from '../auth/AuthForm';
 
 type LoginFormInputs = { email: string; password: string };
 
