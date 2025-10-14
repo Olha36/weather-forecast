@@ -2,15 +2,13 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-
-const StyledInput = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
-  ({ type, ...props }, ref) => {
-    return <input type={type} ref={ref} {...props} />;
-  }
-);
+const StyledInput = React.forwardRef<
+  HTMLInputElement,
+  React.ComponentProps<'input'>
+>(({ type, ...props }, ref) => {
+  return <input type={type} ref={ref} {...props} />;
+});
 StyledInput.displayName = 'StyledInput';
-
-
 
 export const Input = styled(StyledInput)`
   background: #e4e4e4;

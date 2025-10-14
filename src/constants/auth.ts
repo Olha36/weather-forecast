@@ -1,4 +1,4 @@
-import { FormState } from "@/types/FormState";
+import { FormState } from '@/types/FormState';
 
 export const INITIAL_STATE: FormState = {
   success: false,

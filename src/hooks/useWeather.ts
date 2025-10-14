@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../api/weatherApi/weatherApi';
 interface WeatherItem {
   dt: number;

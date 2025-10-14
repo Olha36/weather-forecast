@@ -1,10 +1,10 @@
-import { Box, Collapse, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import humidity from '@/assets/temperature/humidity.png';
 import pressure from '@/assets/temperature/pressure.png';
 import temperature from '@/assets/temperature/temperature.png';
 import visibility from '@/assets/temperature/visibility.png';
 import windSpeed from '@/assets/temperature/wind-speed.png';
+import { Box, Collapse, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 interface DayWeather {

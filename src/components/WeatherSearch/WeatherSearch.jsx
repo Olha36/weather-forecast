@@ -1,10 +1,10 @@
 'use client';
-import background from '../../assets/bg.png';
-import { Divider, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Box, Divider } from '@mui/material';
 import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import background from '../../assets/bg.png';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

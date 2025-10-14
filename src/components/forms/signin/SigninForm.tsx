@@ -10,51 +10,49 @@ import { useState } from 'react';
 import { FormState } from '@/types/FormState';
 import { loginUserService } from '@/data/services/auth-services';
 
-
 type LoginFormInputs = { email: string; password: string };
 
 export function SigninForm() {
-   const [formState, setFormState] = useState<FormState>({});
-   const [isLoading, setIsLoading] = useState(false);
+  const [formState, setFormState] = useState<FormState>({});
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
- const onSubmit = async (data: LoginFormInputs) => {
-   setIsLoading(true);
-   setFormState({});
-   try {
-     const response = await loginUserService({
-       identifier: data.email,
-       password: data.password,
-     });
+  const onSubmit = async (data: LoginFormInputs) => {
+    setIsLoading(true);
+    setFormState({});
+    try {
+      const response = await loginUserService({
+        identifier: data.email,
+        password: data.password,
+      });
 
-     if ('error' in response) {
-       setFormState({
-         success: false,
-         message: response.error.message,
-         strapiErrors: response.error,
-       });
-     } else {
-     
-       setFormState({ success: true, message: 'Login successful!' });
-       document.cookie = `jwt=${response.jwt}; path=/; max-age=${
-         60 * 60 * 24 * 7
-       }`;
-       window.location.href = '/';
-     }
-   } catch (err) {
-     if (err instanceof Error) {
-       setFormState({ success: false, message: err.message });
-     } else {
-       setFormState({ success: false, message: 'Login failed' });
-     }
-   } finally {
-     setIsLoading(false);
-   }
- };
+      if ('error' in response) {
+        setFormState({
+          success: false,
+          message: response.error.message,
+          strapiErrors: response.error,
+        });
+      } else {
+        setFormState({ success: true, message: 'Login successful!' });
+        document.cookie = `jwt=${response.jwt}; path=/; max-age=${
+          60 * 60 * 24 * 7
+        }`;
+        window.location.href = '/';
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setFormState({ success: false, message: err.message });
+      } else {
+        setFormState({ success: false, message: 'Login failed' });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <AuthForm

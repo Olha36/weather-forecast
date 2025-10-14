@@ -1,10 +1,10 @@
 'use server';
 
-import { z } from 'zod';
-import { SignupFormSchema } from '@/data/validation/auth';
-import type { FormState } from '@/types/FormState';
 import { services } from '@/data/services';
 import { isAuthError } from '@/data/services/auth';
+import { SignupFormSchema } from '@/data/validation/auth';
+import type { FormState } from '@/types/FormState';
+import { z } from 'zod';
 
 export async function registerUserAction(
   prevState: FormState,
@@ -36,7 +36,6 @@ export async function registerUserAction(
   }
 
   console.log('Validation successful:', validatedFields.data);
-
 
   const responseData = await services.auth.registerUserService(
     validatedFields.data

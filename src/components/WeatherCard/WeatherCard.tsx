@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../../api/weatherApi/weatherApi';
 import { useWeather } from '../../hooks/useWeather';
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
-import Image from 'next/image';
 
 type WeatherDescription = {
   main: string;

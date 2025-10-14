@@ -1,11 +1,12 @@
 'use client';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useState } from 'react';
 import { typography } from '../../../typography.js';
-import WeatherSearch from '../WeatherSearch/WeatherSearch';
 import WeatherCard from '../WeatherCard/WeatherCard';
 import WeatherChart from '../WeatherChart/WeatherChart';
-import { useState } from 'react';
+import WeatherSearch from '../WeatherSearch/WeatherSearch';
+import WeekForecast from '../WeekForecast/WeekForecast';
 
 const theme = createTheme({
   typography,
@@ -73,7 +74,7 @@ export default function Home() {
       humidity: item.humidity,
       speed: item.speed,
       pressure: 0,
-      visibility: 0, 
+      visibility: 0,
       weather: item.weather,
     }));
 
@@ -86,6 +87,7 @@ export default function Home() {
         <WeatherSearch />
         <WeatherCard onCardChange={handleCardChange} />
         {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
+        <WeekForecast />
       </main>
     </ThemeProvider>
   );

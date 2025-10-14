@@ -1,15 +1,15 @@
 'use client';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { AuthForm } from '../auth/AuthForm';
-import { Input } from '../../ui/Input';
-import { Label } from '../../ui/Label';
-import { Button } from '../../ui/Button';
-import type { SignupFormData } from '@/types/SignupFormData';
-import type { FormState } from '@/types/FormState';
 import { INITIAL_STATE } from '@/constants/auth';
 import { actions } from '@/data/actions';
-import { Box, Typography, Link } from '@mui/material';
+import type { FormState } from '@/types/FormState';
+import type { SignupFormData } from '@/types/SignupFormData';
+import { Box, Link, Typography } from '@mui/material';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Button } from '../../ui/Button';
+import { Input } from '../../ui/Input';
+import { Label } from '../../ui/Label';
+import { AuthForm } from '../auth/AuthForm';
 
 export function SignupForm() {
   const [formState, setFormState] = React.useState<FormState>(INITIAL_STATE);

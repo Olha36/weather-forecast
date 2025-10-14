@@ -2,10 +2,10 @@
 import Avatar from '@mui/material/Avatar';
 import { Button } from '../ui/Button';
 
-import logo from '../../assets/logo.png';
-import Link from 'next/link';
-import Image from 'next/image';
 import { Box } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import logo from '../../assets/logo.png';
 
 export default function Header() {
   return (

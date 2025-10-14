@@ -1,4 +1,4 @@
-import { registerUserService, loginUserService } from './auth';
+import { loginUserService, registerUserService } from './auth';
 export const services = {
   auth: {
     registerUserService,
