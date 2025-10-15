@@ -5,6 +5,7 @@ import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import background from '../../assets/bg.png';
+import Typography from '@mui/material/Typography';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -84,7 +85,8 @@ export default function WeatherSearch() {
           paddingTop: '100px',
         }}
       >
-        <h2 style={{textAlign: 'center'}}>Weather dashboard</h2>
+        <Typography variant="h1">Weather dashboard</Typography>
+       
 
         <div
           style={{
@@ -93,7 +95,7 @@ export default function WeatherSearch() {
             maxWidth: '613px',
             margin: '0 auto',
             alignItems: 'center',
-            padding: '80px 0'
+            padding: '80px 0',
           }}
         >
           <p>

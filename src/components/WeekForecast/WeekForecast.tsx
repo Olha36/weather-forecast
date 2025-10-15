@@ -6,20 +6,21 @@ export default function WeekForecast() {
   const { data } = useWeekWeather('Kyiv');
   return (
     <>
-      {/* <Typography variant="subtitle2">6-day forecast</Typography> */}
       <Box
         sx={{
           backgroundColor: '#E8E8E8',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          // alignItems: 'center',
           width: '1300px',
           margin: '40px auto',
           borderRadius: '16px',
           padding: '16px',
         }}
       >
-        <Typography variant="subtitle2">6-day forecast</Typography>
+        <Typography variant="subtitle2" style={{ margin: '26px 0 0 42px' }}>
+          6-day forecast
+        </Typography>
         {data.map((day, index) => {
           return (
             <Box

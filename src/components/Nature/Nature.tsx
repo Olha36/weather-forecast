@@ -1,4 +1,4 @@
-'use client'
+'use client';
 /* eslint-disable @next/next/no-img-element */
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -39,14 +39,14 @@ export default function Nature() {
     <Box
       sx={{
         width: '100%',
-        height: '30vh',
+        height: '40vh',
         overflow: 'hidden',
         position: 'relative',
         backgroundColor: '#f5f5f5',
       }}
     >
-      <Typography variant="h6" sx={{ mb: 3 }}>
-        Beautiful Nature
+      <Typography variant="subtitle1" style={{ margin: '26px' }}>
+        Beautiful nature
       </Typography>
 
       <Box

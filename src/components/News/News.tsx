@@ -2,6 +2,7 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNews } from '../../lib/hooks/useNews';
+import { Button } from '../ui/Button';
 
 export default function News() {
   const { data, loading, error } = useNews();
@@ -10,7 +11,7 @@ export default function News() {
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;
   return (
-    <>
+    <Box>
       <Typography variant="subtitle1">
         Top business headlines in the US right now
       </Typography>
@@ -63,14 +64,17 @@ export default function News() {
           </Box>
         ))}
       </Box>
-      {visible < data.length && (
-        <button
-          style={{ border: 'none', margin: '40px 0' }}
-          onClick={() => setVisible((prev) => prev + 4)}
-        >
-          See more
-        </button>
-      )}
-    </>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 4 }}>
+        {visible < data.length && (
+          <Button
+            style={{ border: 'none', margin: '40px 0' }}
+            onClick={() => setVisible((prev) => prev + 4)}
+          >
+            See more
+          </Button>
+        )}
+      </Box>
+    </Box>
   );
 }

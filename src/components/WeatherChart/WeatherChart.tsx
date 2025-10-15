@@ -53,11 +53,12 @@ export default function WeatherChart({ hourlyData }: WeatherChartProps) {
       title: {
         display: true,
         text: `Hourly forecast for ${hourlyData[0].city}`,
+        // align: 'center',
         align: 'start',
         color: '#333',
         font: {
-          size: 18,
-          weight: 'bold',
+          size: 16,
+          weight: 600,
         },
         position: 'top',
         fullSize: false,
@@ -66,7 +67,6 @@ export default function WeatherChart({ hourlyData }: WeatherChartProps) {
     layout: {
       padding: {
         top: 26,
-        left: 77,
         bottom: 26,
       },
     },

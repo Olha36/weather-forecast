@@ -1,18 +1,13 @@
 'use client';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useState } from 'react';
-import { typography } from '../../../typography.js';
+
 import WeatherCard from '../WeatherCard/WeatherCard';
 import WeatherChart from '../WeatherChart/WeatherChart';
 import WeatherSearch from '../WeatherSearch/WeatherSearch';
 import WeekForecast from '../WeekForecast/WeekForecast';
 import News from '../News/News';
 import { FormattedForecastItem, NewDayProps } from '@/types/WeatherTypes.js';
-
-const theme = createTheme({
-  typography,
-});
 
 export default function Home() {
   const [selectedCityData, setSelectedCityData] = useState<
@@ -43,14 +38,12 @@ export default function Home() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <main style={{ padding: '16px' }}>
-        <WeatherSearch />
-        <WeatherCard onCardChange={handleCardChange} />
-        {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
-        <WeekForecast />
-        <News />
-      </main>
-    </ThemeProvider>
+    <main style={{ padding: '16px' }}>
+      <WeatherSearch />
+      <WeatherCard onCardChange={handleCardChange} />
+      {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
+      <WeekForecast />
+      <News />
+    </main>
   );
 }
