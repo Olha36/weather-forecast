@@ -1,7 +1,8 @@
-import { Typography } from '@mui/material';
+// import { Typography } from '@mui/material';
 import {
   CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
   Legend,
   LinearScale,
   LineElement,
@@ -10,6 +11,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { WeatherChartProps } from '@/types/WeatherTypes';
 
 ChartJS.register(
   CategoryScale,
@@ -20,44 +22,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-  scales: {
-    x: { title: { display: true, text: 'Hour' } },
-    y: { title: { display: true, text: '°C' } },
-  },
-};
-
-interface FormattedForecastItem {
-  city: string;
-  country: string;
-  date: string;
-  weekday: string;
-  time: string;
-  temp: number;
-  temp_min: number;
-  temp_max: number;
-  feels_like: number;
-  humidity: number;
-  pressure: number;
-  speed: number;
-  visibility: number;
-  weather: {
-    main: string;
-    description: string;
-    icon: string;
-  };
-}
-
-interface WeatherChartProps {
-  hourlyData: FormattedForecastItem[];
-}
 
 export default function WeatherChart({ hourlyData }: WeatherChartProps) {
   if (!hourlyData || !hourlyData.length) return <div>No data for chart</div>;
@@ -80,15 +44,45 @@ export default function WeatherChart({ hourlyData }: WeatherChartProps) {
     ],
   };
 
+  const options: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: `Hourly forecast for ${hourlyData[0].city}`,
+        align: 'start',
+        color: '#333',
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
+        position: 'top',
+        fullSize: false,
+      },
+    },
+    layout: {
+      padding: {
+        top: 26,
+        left: 77,
+        bottom: 26,
+      },
+    },
+    scales: {
+      x: { title: { display: true, text: 'Hour' } },
+      y: { title: { display: true, text: '°C' } },
+    },
+  };
+
   return (
-    <div style={{ marginTop: '40px' }}>
-      <Typography
-        variant="subtitle2"
-        style={{ fontWeight: 600, marginBottom: '10px' }}
-      >
-        Hourly forecast for {hourlyData[0].city}
-      </Typography>
-      <Line options={options} data={chartData} />
+    <div style={{ marginTop: '40px', maxWidth: '1300px', margin: '0 auto' }}>
+      <Line
+        options={options}
+        data={chartData}
+        style={{ backgroundColor: '#E8E8E8' }}
+      />
     </div>
   );
 }

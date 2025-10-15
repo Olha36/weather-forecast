@@ -7,7 +7,7 @@ import { useNature } from '../../lib/hooks/useNature';
 
 export default function Nature() {
   const { data, loading, error } = useNature();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const visible = 5;
 
   const handlers = useSwipeable({

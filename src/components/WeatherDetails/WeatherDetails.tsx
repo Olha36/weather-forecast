@@ -6,27 +6,14 @@ import windSpeed from '@/assets/temperature/wind-speed.png';
 import { Box, Collapse, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-
-interface DayWeather {
-  feels_like: number;
-  temp_min: number;
-  temp_max: number;
-  humidity: number;
-  pressure?: number;
-  speed: number;
-  visibility?: number;
-}
-
-interface WeatherDetailsProps {
-  expanded: boolean;
-  day?: DayWeather | null;
-}
+import { WeatherDetailsProps } from '@/types/WeatherTypes';
 
 const CardDetail = styled('div')(() => ({
   backgroundColor: '#D9D9D9',
   width: '290px',
   height: 'auto',
   padding: '20px 0',
+  textAlign: 'center',
 }));
 
 const StyledImage = styled(Image)(() => ({
@@ -39,7 +26,7 @@ export default function WeatherDetails({ expanded, day }: WeatherDetailsProps) {
       <Box
         sx={{
           mt: 2,
-          p: 12,
+          p: 6,
           borderRadius: 2,
           backgroundColor: '#E8E8E8',
           maxWidth: '1140px',

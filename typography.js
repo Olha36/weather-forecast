@@ -30,7 +30,7 @@ export const typography = {
   },
   subtitle2: {
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: 600,
     [breakpoints.down('sm')]: { fontSize: 14 },
   },
   body1: {

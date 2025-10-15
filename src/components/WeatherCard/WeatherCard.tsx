@@ -16,32 +16,8 @@ import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../../api/weatherApi/weatherApi';
 import { useWeather } from '../../lib/hooks/useWeather';
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
-
-type WeatherDescription = {
-  main: string;
-  description: string;
-  icon: string;
-};
-
-type NewDayProps = {
-  city: string;
-  country: string;
-  date: string;
-  weekday: string;
-  time: string;
-  temp: number;
-  temp_min: number;
-  temp_max: number;
-  feels_like: number;
-  humidity: number;
-  speed: number;
-  gust?: number;
-  weather: WeatherDescription;
-};
-
-interface WeatherCardProps {
-  onCardChange?: (data: NewDayProps | NewDayProps[]) => void;
-}
+import { FormattedForecastItem } from '@/types/WeatherTypes';
+import { WeatherCardProps } from '@/types/WeatherTypes';
 
 const CardItem = styled('div')(() => ({
   width: '320px',
@@ -96,7 +72,7 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
     try {
       const result = await getHourlyForecast(city);
       const date = new Date(result.list[0].dt * 1000);
-      const newDay: NewDayProps = {
+      const newDay: FormattedForecastItem = {
         city: result.city.name,
         country: result.city.country,
         date: date.toLocaleDateString('en-US', {
@@ -167,61 +143,63 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
                   <Typography variant="body2">{day.country}</Typography>
                 </Box>
 
-                <Typography variant="body1">{day.time}</Typography>
+                <Box textAlign="center">
+                  <Typography variant="body1">{day.time}</Typography>
 
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    my: 1,
-                  }}
-                >
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      my: 1,
+                    }}
                   >
-                    Hourly forecast
-                  </Button>
-                  <Button
-                    size="medium"
-                    variant="contained"
-                    sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                    >
+                      Hourly forecast
+                    </Button>
+                    <Button
+                      size="medium"
+                      variant="contained"
+                      sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                    >
+                      Weekly forecast
+                    </Button>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-evenly',
+                      mb: 1,
+                    }}
                   >
-                    Weekly forecast
-                  </Button>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-evenly',
-                    mb: 1,
-                  }}
-                >
-                  <Typography variant="caption">{day.date}</Typography>
-                  <Divider
-                    orientation="vertical"
-                    flexItem
-                    sx={{ backgroundColor: '#000000' }}
-                  />
-                  <Typography variant="caption">{day.weekday}</Typography>
-                </Box>
-
-                {loadingCard[index] ? (
-                  <CircularProgress sx={{ my: 3 }} />
-                ) : (
-                  <>
-                    <Image
-                      src={`https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`}
-                      alt={day.weather.description}
-                      style={{ margin: '22px 0 15px' }}
-                      width={120}
-                      height={120}
+                    <Typography variant="caption">{day.date}</Typography>
+                    <Divider
+                      orientation="vertical"
+                      flexItem
+                      sx={{ backgroundColor: '#000000' }}
                     />
-                    <Typography variant="h2">{day.temp}°C</Typography>
-                  </>
-                )}
+                    <Typography variant="caption">{day.weekday}</Typography>
+                  </Box>
+
+                  {loadingCard[index] ? (
+                    <CircularProgress sx={{ my: 3 }} />
+                  ) : (
+                    <>
+                      <Image
+                        src={`https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`}
+                        alt={day.weather.description}
+                        style={{ margin: '22px 0 15px' }}
+                        width={120}
+                        height={120}
+                      />
+                      <Typography variant="h2">{day.temp}°C</Typography>
+                    </>
+                  )}
+                </Box>
 
                 <CardActions>
                   <RefreshIcon
@@ -267,7 +245,7 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
       <Pagination
         count={pageTotal}
         page={page}
-        style={{ display: 'grid', justifyContent: 'center' }}
+        style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
         onChange={handlePageChange}
       />
     </div>

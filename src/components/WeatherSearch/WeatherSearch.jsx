@@ -84,7 +84,7 @@ export default function WeatherSearch() {
           paddingTop: '100px',
         }}
       >
-        <h2>Weather dashboard</h2>
+        <h2 style={{textAlign: 'center'}}>Weather dashboard</h2>
 
         <div
           style={{
@@ -93,6 +93,7 @@ export default function WeatherSearch() {
             maxWidth: '613px',
             margin: '0 auto',
             alignItems: 'center',
+            padding: '80px 0'
           }}
         >
           <p>

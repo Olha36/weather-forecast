@@ -8,51 +8,11 @@ import WeatherChart from '../WeatherChart/WeatherChart';
 import WeatherSearch from '../WeatherSearch/WeatherSearch';
 import WeekForecast from '../WeekForecast/WeekForecast';
 import News from '../News/News';
+import { FormattedForecastItem, NewDayProps } from '@/types/WeatherTypes.js';
 
 const theme = createTheme({
   typography,
 });
-
-interface FormattedForecastItem {
-  city: string;
-  country: string;
-  date: string;
-  weekday: string;
-  time: string;
-  temp: number;
-  temp_min: number;
-  temp_max: number;
-  feels_like: number;
-  humidity: number;
-  pressure: number;
-  speed: number;
-  visibility: number;
-  weather: {
-    main: string;
-    description: string;
-    icon: string;
-  };
-}
-
-interface NewDayProps {
-  city: string;
-  country: string;
-  date: string;
-  weekday: string;
-  time: string;
-  temp: number;
-  temp_min: number;
-  temp_max: number;
-  feels_like: number;
-  humidity: number;
-  speed: number;
-  gust?: number;
-  weather: {
-    main: string;
-    description: string;
-    icon: string;
-  };
-}
 
 export default function Home() {
   const [selectedCityData, setSelectedCityData] = useState<

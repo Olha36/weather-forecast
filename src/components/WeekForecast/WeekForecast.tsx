@@ -1,11 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import { useWeekWeather } from '@/lib/hooks/useWeekWeather';
 import { Box, Typography } from '@mui/material';
 
 export default function WeekForecast() {
   const { data } = useWeekWeather('Kyiv');
   return (
-    <Box style={{ margin: '40px 0' }}>
-      <Typography variant="subtitle2">6-day forecast</Typography>
+    <>
+      {/* <Typography variant="subtitle2">6-day forecast</Typography> */}
       <Box
         sx={{
           backgroundColor: '#E8E8E8',
@@ -13,11 +14,12 @@ export default function WeekForecast() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '1300px',
-          margin: '0 auto',
+          margin: '40px auto',
           borderRadius: '16px',
           padding: '16px',
         }}
       >
+        <Typography variant="subtitle2">6-day forecast</Typography>
         {data.map((day, index) => {
           return (
             <Box
@@ -38,14 +40,7 @@ export default function WeekForecast() {
               <Typography variant="caption">
                 {day.weekday}, {day.date}
               </Typography>
-              {/* <img
-                src={`https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`}
-                alt={day.weather.description}
-                style={{ margin: "22px 0 15px" }}
-              />
-              <Typography>
-                {day.temp_min}/{day.temp_max}°C
-              </Typography> */}
+
               <Box
                 sx={{
                   display: 'flex',
@@ -68,6 +63,6 @@ export default function WeekForecast() {
           );
         })}
       </Box>
-    </Box>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import { useNews } from '../../lib/hooks/useNews';
 
 export default function News() {
   const { data, loading, error } = useNews();
-  const [visible, setVisible] = useState(4);
+  const [visible, setVisible] = useState<number>(4);
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;

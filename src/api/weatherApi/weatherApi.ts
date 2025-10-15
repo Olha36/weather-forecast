@@ -1,8 +1,4 @@
 const API_KEY = '40ab8a5ddaa97704728bfab888e29c3e';
-// type WeatherProps = {
-//     city: string
-// }
-
 export const getCurrentWeather = async (city: string) => {
   const res = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
