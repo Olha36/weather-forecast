@@ -1,94 +1,30 @@
 'use client';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
-import { Box, Typography, Container, Divider } from '@mui/material';
-import { keyframes } from '@emotion/react';
+import { Typography, Divider } from '@mui/material';
 
-const abomination1 = keyframes`
-  0% { content: "A"; }
-  4% { content: "Ab"; }
-  8% { content: "Abo"; }
-  12% { content: "Abou"; }
-  16% { content: "About"; }
-  20% { content: "About "; }
-  24% { content: "About t"; }
-  28% { content: "About th"; }
-  32% { content: "About thi"; }
-  36% { content: "About this"; }
-  40% { content: "About this "; }
-  44% { content: "About this p"; }
-  48% { content: "About this pr"; }
-  52% { content: "About this pro"; }
-  56% { content: "About this proj"; }
-  60% { content: "About this proje"; }
-  64% { content: "About this projec"; }
-  68% { content: "About this project"; }
-  72% { content: "About this project"; }
-  76% { content: "About this project"; }
-  80% { content: "About this project"; }
-  84% { content: "About this project"; }
-  88% { content: "About this project"; }
-  92% { content: "About this project"; }
-  96% { content: "About this project"; }
-  100% { content: "About this project"; }
-`;
+import {
+  BoxContainer,
+  AnimatedTitle,
+  ContainerElement,
+  BoxTitle,
+  TypographyTitle,
+} from '@/css/style';
 
 export default function About() {
   return (
     <>
       <Header />
-      <Box
-        sx={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
-          color: '#333',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          pt: 10,
-          pb: 10,
-        }}
-      >
-        <Container
+      <BoxContainer>
+        <ContainerElement
           maxWidth="md"
           sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            borderRadius: '24px',
-            boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
             p: { xs: 4, sm: 6, md: 8 },
-            backdropFilter: 'blur(10px)',
           }}
         >
-          <Box
-            style={{
-              position: 'relative',
-              width: '83%',
-              height: '175px',
-              margin: '7% auto',
-            }}
-          >
-            <Typography
-              variant="h2"
-              sx={{
-                position: 'absolute',
-                width: '100%',
-                height: '50%',
-                fontSize: '45px',
-                color: '#a9a9a9',
-                '&::after': {
-                  position: 'absolute',
-                  content: `''`,
-                  width: ' 100%',
-                  height: '100%',
-                  lineHeight: '48px',
-                  left: '30%',
-                  top: '50%',
-                  animation: `${abomination1} 7.5s linear 1 forwards`,
-                  animationFillMode: 'forwards',
-                },
-              }}
-            ></Typography>
-          </Box>
+          <BoxTitle>
+            <AnimatedTitle variant="h2"></AnimatedTitle>
+          </BoxTitle>
 
           <Typography
             variant="body1"
@@ -102,17 +38,7 @@ export default function About() {
 
           <Divider sx={{ mb: 4 }} />
 
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: 600,
-              fontSize: '1.7rem',
-              color: 'black',
-              mb: 2,
-            }}
-          >
-            What It Does
-          </Typography>
+          <TypographyTitle variant="h3">What It Does</TypographyTitle>
           <Typography
             variant="body1"
             sx={{ mb: 4, fontSize: '1.05rem', lineHeight: 1.8 }}
@@ -126,17 +52,7 @@ export default function About() {
 
           <Divider sx={{ mb: 4 }} />
 
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: 600,
-              fontSize: '1.7rem',
-              color: 'black',
-              mb: 2,
-            }}
-          >
-            Tech Stack
-          </Typography>
+          <TypographyTitle variant="h3">Tech Stack</TypographyTitle>
           <Typography
             variant="body1"
             sx={{ mb: 4, fontSize: '1.05rem', lineHeight: 1.8 }}
@@ -151,17 +67,7 @@ export default function About() {
 
           <Divider sx={{ mb: 4 }} />
 
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: 600,
-              fontSize: '1.7rem',
-              color: 'black',
-              mb: 2,
-            }}
-          >
-            About the Developer
-          </Typography>
+          <TypographyTitle variant="h3">About the Developer</TypographyTitle>
           <Typography
             variant="body1"
             sx={{ fontSize: '1.05rem', lineHeight: 1.8 }}
@@ -171,8 +77,8 @@ export default function About() {
             project is part of my learning journey in mastering{' '}
             <strong>Next.js</strong> and working with real-world APIs.
           </Typography>
-        </Container>
-      </Box>
+        </ContainerElement>
+      </BoxContainer>
       <Footer />
     </>
   );
