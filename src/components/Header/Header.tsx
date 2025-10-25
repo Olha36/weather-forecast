@@ -23,11 +23,11 @@ export default function Header() {
           <Image src={logo} alt="logo" style={{ cursor: 'pointer' }} />
         </Link>
         <nav>
-          <a href="#">Who we are</a>
-          <a href="#" style={{ margin: '0 42px' }}>
+          <Link href="/about">Who we are</Link>
+          <Link href="/contact" style={{ margin: '0 42px' }}>
             Contacts
-          </a>
-          <a href="#">Menu</a>
+          </Link>
+          <Link href="/menu">Menu</Link>
         </nav>
         <Box style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/auth/signup">

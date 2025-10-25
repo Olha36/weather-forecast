@@ -20,7 +20,7 @@ export default function Footer() {
         justifyContent: 'space-around',
         alignItems: 'center',
         padding: '50px 0',
-        marginTop: '20px',
+        // marginTop: '20px',
       }}
     >
       <Img src={footerLogo} alt="footer logo" />
