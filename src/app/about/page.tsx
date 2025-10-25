@@ -87,9 +87,7 @@ export default function About() {
                   animationFillMode: 'forwards',
                 },
               }}
-            >
-           
-            </Typography>
+            ></Typography>
           </Box>
 
           <Typography
@@ -98,9 +96,8 @@ export default function About() {
           >
             Welcome to <strong>SkyPulse</strong> — a modern web application that
             brings you real-time weather updates and the latest news in one
-            place. The goal of this project is to make it easy for users to stay
-            informed about the world around them, from weather conditions to
-            current events.
+            place. The goal of this project is to practice with Next.js,
+            Typescript and Strapi.
           </Typography>
 
           <Divider sx={{ mb: 4 }} />
@@ -148,7 +145,8 @@ export default function About() {
             <strong>React</strong>, and <strong>TypeScript</strong>. It uses API
             data from <strong>OpenWeatherMap</strong> for weather forecasts and
             a <strong>News API</strong> for headlines. Styling is handled using{' '}
-            <strong>Material UI</strong> and custom CSS.
+            <strong>Material UI</strong> and custom CSS. For authentication, I
+            integrated <strong>Strapi</strong>.
           </Typography>
 
           <Divider sx={{ mb: 4 }} />
