@@ -45,7 +45,10 @@ export default function Nature() {
         backgroundColor: '#f5f5f5',
       }}
     >
-      <Typography variant="subtitle1" style={{ margin: '26px' }}>
+      <Typography
+        variant="subtitle1"
+        style={{ margin: '26px', textAlign: 'center' }}
+      >
         Beautiful nature
       </Typography>
 

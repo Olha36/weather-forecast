@@ -12,7 +12,7 @@ export default function News() {
   if (error) return <Typography color="error">{error}</Typography>;
   return (
     <Box>
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
         Top business headlines in the US right now
       </Typography>
 

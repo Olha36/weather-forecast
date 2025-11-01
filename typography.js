@@ -9,7 +9,6 @@ export const typography = {
     fontWeight: 600,
     [breakpoints.down('md')]: { fontSize: 20 },
     [breakpoints.down('sm')]: { fontSize: 12 },
-    textAlign: 'center',
   },
   h2: {
     fontSize: 32,
@@ -28,7 +27,6 @@ export const typography = {
     fontSize: 20,
     fontWeight: 500,
     [breakpoints.down('sm')]: { fontSize: 14 },
-    textAlign: 'center',
   },
   subtitle2: {
     fontSize: 16,
@@ -39,7 +37,7 @@ export const typography = {
     fontSize: 24,
     fontWeight: 300,
     [breakpoints.down('sm')]: { fontSize: 16 },
-    textAlign: 'center',
+   
   },
   body2: {
     fontSize: 14,

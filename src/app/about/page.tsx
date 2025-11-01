@@ -10,7 +10,13 @@ import {
   BoxTitle,
   TypographyTitle,
 } from '@/css/style';
+import { styled } from '@mui/material/styles';
 
+const AboutDescription = styled(Typography)(() => ({
+  mb: 4,
+  fontSize: '1.1rem',
+  lineHeight: 1.8,
+}));
 export default function About() {
   return (
     <>
@@ -26,57 +32,45 @@ export default function About() {
             <AnimatedTitle variant="h2"></AnimatedTitle>
           </BoxTitle>
 
-          <Typography
-            variant="body1"
-            sx={{ mb: 4, fontSize: '1.1rem', lineHeight: 1.8 }}
-          >
+          <AboutDescription variant="body1">
             Welcome to <strong>SkyPulse</strong> — a modern web application that
             brings you real-time weather updates and the latest news in one
             place. The goal of this project is to practice with Next.js,
             Typescript and Strapi.
-          </Typography>
+          </AboutDescription>
 
           <Divider sx={{ mb: 4 }} />
 
           <TypographyTitle variant="h3">What It Does</TypographyTitle>
-          <Typography
-            variant="body1"
-            sx={{ mb: 4, fontSize: '1.05rem', lineHeight: 1.8 }}
-          >
+          <AboutDescription variant="body1">
             The app allows users to search for weather forecasts by city, view
             detailed temperature and humidity data, and read trending news
             articles fetched from a public API. It combines two essential daily
             habits — checking the weather and reading the news — into one
             simple, fast, and responsive interface.
-          </Typography>
+          </AboutDescription>
 
           <Divider sx={{ mb: 4 }} />
 
           <TypographyTitle variant="h3">Tech Stack</TypographyTitle>
-          <Typography
-            variant="body1"
-            sx={{ mb: 4, fontSize: '1.05rem', lineHeight: 1.8 }}
-          >
+          <AboutDescription variant="body1">
             This project is built with <strong>Next.js</strong>,{' '}
             <strong>React</strong>, and <strong>TypeScript</strong>. It uses API
             data from <strong>OpenWeatherMap</strong> for weather forecasts and
             a <strong>News API</strong> for headlines. Styling is handled using{' '}
             <strong>Material UI</strong> and custom CSS. For authentication, I
             integrated <strong>Strapi</strong>.
-          </Typography>
+          </AboutDescription>
 
           <Divider sx={{ mb: 4 }} />
 
           <TypographyTitle variant="h3">About the Developer</TypographyTitle>
-          <Typography
-            variant="body1"
-            sx={{ fontSize: '1.05rem', lineHeight: 1.8 }}
-          >
+          <AboutDescription variant="body1">
             Hi! I’m <strong>Olha Kucheruk</strong> — a frontend developer
             passionate about building clean, interactive web applications. This
             project is part of my learning journey in mastering{' '}
             <strong>Next.js</strong> and working with real-world APIs.
-          </Typography>
+          </AboutDescription>
         </ContainerElement>
       </BoxContainer>
       <Footer />

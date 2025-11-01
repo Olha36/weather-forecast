@@ -41,8 +41,8 @@ const CardActions = styled('div')(() => ({
   marginTop: '10px',
 }));
 
-export default function WeatherCard({ onCardChange }: WeatherCardProps) {
-  const { data, setData, loading, error } = useWeather('Kyiv');
+export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
+  const { data, setData, loading, error } = useWeather(city);
   const [loadingCard, setLoadingCard] = useState<Record<number, boolean>>({});
   const [isFav, setIsFav] = useState<Record<number, boolean>>({});
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -144,7 +144,9 @@ export default function WeatherCard({ onCardChange }: WeatherCardProps) {
                 </Box>
 
                 <Box textAlign="center">
-                  <Typography variant="body1">{day.time}</Typography>
+                  <Typography variant="body1" sx={{ textAlign: 'center' }}>
+                    {day.time}
+                  </Typography>
 
                   <Box
                     sx={{

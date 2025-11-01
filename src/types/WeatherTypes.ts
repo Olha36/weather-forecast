@@ -5,12 +5,12 @@ export interface WeatherDescription {
 }
 
 export interface FormattedForecastItem {
-  city?: string;
-  country?: string;
-  date?: string;
-  weekday?: string;
-  time?: string;
-  temp?: number;
+  city: string;
+  country: string;
+  date: string;
+  weekday: string;
+  time: string;
+  temp: number;
   temp_min: number;
   temp_max: number;
   feels_like: number;
@@ -46,6 +46,7 @@ export interface WeatherCardProps {
   onCardChange?: (
     data: FormattedForecastItem | FormattedForecastItem[]
   ) => void;
+  city: string;
 }
 
 export interface WeatherChartProps {
