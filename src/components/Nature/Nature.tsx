@@ -1,39 +1,25 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
 import { useNature } from '../../lib/hooks/useNature';
+import '../../css/nature.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import {
+  A11y,
+  EffectCoverflow,
+  Navigation,
+  Pagination,
+  Scrollbar,
+} from 'swiper/modules';
 
 export default function Nature() {
   const { data, loading, error } = useNature();
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const visible = 5;
-
-  const handlers = useSwipeable({
-    onSwipedLeft: () =>
-      setCurrentIndex((prev) => (prev === data.length - 1 ? 0 : prev + 1)),
-    onSwipedRight: () =>
-      setCurrentIndex((prev) => (prev === 0 ? data.length - 1 : prev - 1)),
-    trackMouse: true,
-  });
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;
-
-  const getVisibleImages = () => {
-    const half = Math.floor(visible / 2);
-    const result = [];
-
-    for (let i = -half; i <= half; i++) {
-      const index = (currentIndex + i + data.length) % data.length;
-      result.push({ ...data[index], realIndex: index, offset: i });
-    }
-
-    return result;
-  };
-
-  const visibleImages = getVisibleImages();
 
   return (
     <Box
@@ -45,56 +31,44 @@ export default function Nature() {
         backgroundColor: '#f5f5f5',
       }}
     >
-      <Typography
-        variant="subtitle1"
-        style={{ margin: '26px', textAlign: 'center' }}
-      >
+      <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
         Beautiful nature
       </Typography>
 
       <Box
-        {...handlers}
         sx={{
           position: 'relative',
           width: '100%',
-          height: '70%',
+          // height: '90%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'grab',
         }}
       >
-        {visibleImages.map((image) => (
-          <Box
-            key={image.realIndex}
-            sx={{
-              position: 'absolute',
-              transition: 'all 0.6s ease',
-              transform: `translateX(${image.offset * 40}%) scale(${
-                image.offset === 0 ? 1 : 0.8
-              })`,
-              opacity: image.offset === 0 ? 1 : 0.5,
-              zIndex: image.offset === 0 ? 3 : 1,
-              filter: image.offset === 0 ? 'none' : 'brightness(0.8)',
-            }}
-          >
-            <img
-              src={image.image}
-              alt={image.tags}
-              style={{
-                width: '500px',
-                height: '300px',
-                borderRadius: '16px',
-                objectFit: 'cover',
-                boxShadow:
-                  image.offset === 0
-                    ? '0 12px 25px rgba(0,0,0,0.4)'
-                    : '0 8px 15px rgba(0,0,0,0.2)',
-                transition: 'all 0.4s ease',
-              }}
-            />
-          </Box>
-        ))}
+        <Swiper
+          effect={'coverflow'}
+          modules={[Navigation, Pagination, Scrollbar, A11y, EffectCoverflow]}
+          spaceBetween={50}
+          slidesPerView={3}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          scrollbar={{ draggable: true }}
+          className="mySwiper"
+        >
+          {data.map((img, index) => (
+            <SwiperSlide key={index}>
+              <img src={img.image} alt={`Slide ${index}`} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </Box>
     </Box>
   );

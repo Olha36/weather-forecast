@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getNatureImages } from '@/api/nature/nature';
 
 interface NatureImages {
+  previewURL?: string | Blob | undefined;
   image: string;
   tags: string;
 }
