@@ -1,3 +1,5 @@
+'use client';
+
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -14,10 +16,10 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../../api/weatherApi/weatherApi';
-import { useWeather } from '../../lib/hooks/useWeather';
+import { FormattedForecastItem, WeatherCardProps } from '@/types/WeatherTypes';
+import { toggleFavourite, isFavourite } from '@/lib/utils/favouritesStorage';
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
-import { FormattedForecastItem } from '@/types/WeatherTypes';
-import { WeatherCardProps } from '@/types/WeatherTypes';
+import { useWeather } from '@/lib/hooks/useWeather';
 
 const CardItem = styled('div')(() => ({
   width: '320px',
@@ -41,34 +43,59 @@ const CardActions = styled('div')(() => ({
   marginTop: '10px',
 }));
 
-export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
-  const { data, setData, loading, error } = useWeather(city);
-  const [loadingCard, setLoadingCard] = useState<Record<number, boolean>>({});
-  const [isFav, setIsFav] = useState<Record<number, boolean>>({});
+export default function WeatherCard({
+  data: initialData,
+  onCardChange,
+  city,
+}: WeatherCardProps) {
+  const isStatic = city === '';
+  const weather = useWeather(city);
+
+  const [data, setData] = useState<FormattedForecastItem[]>(
+    isStatic ? initialData ?? [] : []
+  );
+  const [loadingCard, setLoadingCard] = useState<Map<number, boolean>>(
+    new Map()
+  );
+  const [isFav, setIsFav] = useState<Map<number, boolean>>(new Map());
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [page, setPage] = useState(1);
-  const cardPerPage = 3;
 
+  const cardPerPage = 3;
   const startIndex = (page - 1) * cardPerPage;
   const endIndex = page * cardPerPage;
   const currentCards = data.slice(startIndex, endIndex);
   const pageTotal = Math.ceil(data.length / cardPerPage);
 
+  const loading = isStatic ? false : weather.loading;
+  const error = isStatic ? null : weather.error;
+
+  // Initialize favourites map
   useEffect(() => {
-    if (currentCards.length && onCardChange) {
-      const timeout = setTimeout(() => {
-        onCardChange(currentCards);
-      });
-      return () => clearTimeout(timeout);
+    const favMap = new Map<number, boolean>();
+    data.forEach((card, index) => favMap.set(index, isFavourite(card)));
+    setIsFav(favMap);
+  }, [data]);
+
+  // Update data when API returns new data (dynamic mode)
+  useEffect(() => {
+    if (!isStatic && weather.data.length) {
+      setData(weather.data);
     }
-  }, [currentCards, onCardChange]);
+  }, [weather.data, isStatic]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!data.length) return null;
+  // Favourite toggle handler
+  const handleFavourite = (globalIndex: number) => {
+    const card = data[globalIndex];
+    const updated = toggleFavourite(card);
 
-  const handleRefresh = async (index: number, city: string) => {
-    setLoadingCard((prev) => ({ ...prev, [index]: true }));
+    setIsFav((prev) => new Map(prev).set(globalIndex, !prev.get(globalIndex)));
+    onCardChange?.(updated);
+  };
+
+  // Refresh handler
+  const handleRefresh = async (globalIndex: number, city: string) => {
+    setLoadingCard((prev) => new Map(prev).set(globalIndex, true));
     try {
       const result = await getHourlyForecast(city);
       const date = new Date(result.list[0].dt * 1000);
@@ -94,43 +121,48 @@ export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
         gust: result.list[0].wind.gust,
         weather: result.list[0].weather[0],
       };
-      setData((prevData) => {
-        const updated = [...prevData];
-        updated[index] = newDay;
+
+      setData((prev) => {
+        const updated = [...prev];
+        updated[globalIndex] = newDay;
         return updated;
       });
-    } catch (err) {
-      console.error(err);
     } finally {
-      setLoadingCard((prev) => ({ ...prev, [index]: false }));
+      setLoadingCard((prev) => new Map(prev).set(globalIndex, false));
     }
   };
 
-  const handleFavourite = (index: number) => {
-    setIsFav((prev) => ({ ...prev, [index]: !prev[index] }));
+  const handleToggleExpand = (globalIndex: number) => {
+    setExpandedIndex((prev) => (prev === globalIndex ? null : globalIndex));
   };
 
-  const handleToggleExpand = (index: number) => {
-    setExpandedIndex((prev) => (prev === index ? null : index));
+  const handleDelete = (globalIndex: number) => {
+    setData((prev) => prev.filter((_, i) => i !== globalIndex));
+    setIsFav((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(globalIndex);
+      return newMap;
+    });
   };
 
-  const handleDelete = async (index: number) => {
-    setData((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_: unknown, value: number) => {
     setPage(value);
     setExpandedIndex(null);
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return <div>No data</div>;
+
   return (
     <div>
       <CardContainer>
-        {currentCards.map((day, index) => {
-          const expanded = expandedIndex === index;
+        {currentCards.map((day, localIndex) => {
+          const globalIndex = startIndex + localIndex;
+          const expanded = expandedIndex === globalIndex;
 
           return (
-            <div key={index}>
+            <div key={globalIndex}>
               <CardItem>
                 <Box
                   sx={{
@@ -144,9 +176,7 @@ export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
                 </Box>
 
                 <Box textAlign="center">
-                  <Typography variant="body1" sx={{ textAlign: 'center' }}>
-                    {day.time}
-                  </Typography>
+                  <Typography variant="body1">{day.time}</Typography>
 
                   <Box
                     sx={{
@@ -187,7 +217,7 @@ export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
                     <Typography variant="caption">{day.weekday}</Typography>
                   </Box>
 
-                  {loadingCard[index] ? (
+                  {loadingCard.get(globalIndex) ? (
                     <CircularProgress sx={{ my: 3 }} />
                   ) : (
                     <>
@@ -206,30 +236,33 @@ export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
                 <CardActions>
                   <RefreshIcon
                     style={{ cursor: 'pointer' }}
-                    onClick={() => handleRefresh(index, day.city)}
+                    onClick={() => handleRefresh(globalIndex, day.city)}
                   />
-                  {isFav[index] ? (
+
+                  {isFav.get(globalIndex) ? (
                     <FavoriteIcon
                       style={{ cursor: 'pointer', color: 'red' }}
-                      onClick={() => handleFavourite(index)}
+                      onClick={() => handleFavourite(globalIndex)}
                     />
                   ) : (
                     <FavoriteBorderOutlinedIcon
                       style={{ cursor: 'pointer' }}
-                      onClick={() => handleFavourite(index)}
+                      onClick={() => handleFavourite(globalIndex)}
                     />
                   )}
+
                   <Button
                     size="medium"
                     variant="contained"
                     sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
-                    onClick={() => handleToggleExpand(index)}
+                    onClick={() => handleToggleExpand(globalIndex)}
                   >
                     {expanded ? 'see less' : 'see more'}
                   </Button>
+
                   <DeleteOutlineOutlinedIcon
                     style={{ cursor: 'pointer' }}
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(globalIndex)}
                   />
                 </CardActions>
               </CardItem>
@@ -240,7 +273,7 @@ export default function WeatherCard({ onCardChange, city }: WeatherCardProps) {
 
       <CardContainer>
         {expandedIndex !== null && (
-          <WeatherDetails expanded={true} day={currentCards[expandedIndex]} />
+          <WeatherDetails expanded={true} day={data[expandedIndex]} />
         )}
       </CardContainer>
 

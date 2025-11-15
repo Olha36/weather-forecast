@@ -43,9 +43,8 @@ export interface NewDayProps {
 }
 
 export interface WeatherCardProps {
-  onCardChange?: (
-    data: FormattedForecastItem | FormattedForecastItem[]
-  ) => void;
+  data?: FormattedForecastItem[];
+  onCardChange?: (data: FormattedForecastItem[]) => void;
   city: string;
 }
 
