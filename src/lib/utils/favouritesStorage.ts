@@ -2,6 +2,10 @@ import { FormattedForecastItem } from '@/types/WeatherTypes';
 
 const FAVOURITES_KEY = 'favouriteWeatherCards';
 
+export const getCardId = (card: FormattedForecastItem): string => {
+  return `${card.city}-${card.date}-${card.time}`;
+};
+
 export function getFavourites(): FormattedForecastItem[] {
   if (typeof window === 'undefined') return [];
   const saved = localStorage.getItem(FAVOURITES_KEY);
@@ -15,15 +19,13 @@ export function saveFavourites(favourites: FormattedForecastItem[]) {
 
 export function toggleFavourite(card: FormattedForecastItem) {
   const favourites = getFavourites();
-  const exists = favourites.some(
-    (fav) => fav.city === card.city && fav.date === card.date
-  );
+  const id = getCardId(card);
+
+  const exists = favourites.some((fav) => getCardId(fav) === id);
 
   let updated: FormattedForecastItem[];
   if (exists) {
-    updated = favourites.filter(
-      (fav) => !(fav.city === card.city && fav.date === card.date)
-    );
+    updated = favourites.filter((fav) => getCardId(fav) !== id);
   } else {
     updated = [...favourites, card];
   }
@@ -34,7 +36,6 @@ export function toggleFavourite(card: FormattedForecastItem) {
 
 export function isFavourite(card: FormattedForecastItem): boolean {
   const favourites = getFavourites();
-  return favourites.some(
-    (fav) => fav.city === card.city && fav.date === card.date
-  );
+  const id = getCardId(card);
+  return favourites.some((fav) => getCardId(fav) === id);
 }
