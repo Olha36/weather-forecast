@@ -4,6 +4,7 @@ import { getFavourites, saveFavourites } from '@/lib/utils/favouritesStorage';
 import WeatherCard from '../WeatherCard/WeatherCard';
 import { FormattedForecastItem } from '@/types/WeatherTypes';
 import { useEffect, useState } from 'react';
+import Header from '../Header/Header';
 
 export default function Favourite() {
   const [favourites, setFavourites] = useState<FormattedForecastItem[]>([]);
@@ -19,7 +20,8 @@ export default function Favourite() {
 
   return (
     <div>
-      <h2>Your favourites</h2>
+      <Header />
+      <h2 style={{textAlign: 'center'}}>Your favourites</h2>
 
       {favourites.length > 0 ? (
         <WeatherCard

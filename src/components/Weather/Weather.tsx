@@ -43,6 +43,7 @@ export default function Home() {
       <WeatherSearch onSearch={handleSearch} />
       <WeatherCard onCardChange={handleCardChange} city={city} />
       {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
+   
       <WeekForecast />
       <News />
     </main>

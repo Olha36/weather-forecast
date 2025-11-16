@@ -7,6 +7,7 @@ import Link from 'next/link';
 import logo from '../../assets/logo.png';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import favouriteIcon from '../../assets/favourite.png';
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +52,17 @@ export default function Header() {
         <Link href="/menu">Menu</Link>
       </nav>
       <Box style={{ display: 'flex', alignItems: 'center' }}>
+        {isLoggedIn && (
+          <Link href={'/favourite'}>
+            <Image
+              src={favouriteIcon}
+              width={30}
+              height={30}
+              alt="favourite icon"
+            ></Image>
+          </Link>
+        )}
+
         <Button
           size="default"
           variant="default"

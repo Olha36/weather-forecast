@@ -84,6 +84,7 @@ export default function WeatherCard({
   useEffect(() => {
     if (!isStatic && weather.data.length) {
       setData(weather.data);
+      onCardChange?.(weather.data);
     }
   }, [weather.data, isStatic]);
 
