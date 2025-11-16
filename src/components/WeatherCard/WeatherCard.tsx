@@ -17,13 +17,16 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getHourlyForecast } from '../../api/weatherApi/weatherApi';
 import { FormattedForecastItem, WeatherCardProps } from '@/types/WeatherTypes';
-import { toggleFavourite, isFavourite } from '@/lib/utils/favouritesStorage';
+import {
+  toggleFavourite,
+  isFavourite,
+  getCardId,
+} from '@/lib/utils/favouritesStorage';
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
 import { useWeather } from '@/lib/hooks/useWeather';
+import { useAuthStore } from '@/lib/utils/authStore';
 
-const getCardId = (card: FormattedForecastItem) =>
-  `${card.city}-${card.date}-${card.time}`;
-
+// styling
 const CardItem = styled('div')(() => ({
   width: '320px',
   borderRadius: '20px',
@@ -53,6 +56,7 @@ export default function WeatherCard({
 }: WeatherCardProps) {
   const isStatic = city === '';
   const weather = useWeather(city);
+  const { isLoggedIn } = useAuthStore();
 
   const [data, setData] = useState<FormattedForecastItem[]>(
     isStatic ? initialData ?? [] : []
@@ -66,12 +70,8 @@ export default function WeatherCard({
 
   const cardPerPage = 3;
   const startIndex = (page - 1) * cardPerPage;
-  const endIndex = page * cardPerPage;
-  const currentCards = data.slice(startIndex, endIndex);
+  const currentCards = data.slice(startIndex, startIndex + cardPerPage);
   const pageTotal = Math.ceil(data.length / cardPerPage);
-
-  const loading = isStatic ? false : weather.loading;
-  const error = isStatic ? null : weather.error;
 
   useEffect(() => {
     const favMap = new Map<string, boolean>();
@@ -88,19 +88,45 @@ export default function WeatherCard({
     }
   }, [weather.data, isStatic]);
 
-  const handleFavourite = (card: FormattedForecastItem) => {
+  const handleFavouriteClick = (card: FormattedForecastItem) => {
+    if (!isLoggedIn) {
+      alert('Please log in to save cards to favourites.');
+      return;
+    }
+
     const updated = toggleFavourite(card);
     const id = getCardId(card);
 
     setIsFav((prev) => new Map(prev).set(id, !prev.get(id)));
+
+    if (isStatic) {
+      const filtered = data.filter((c) => getCardId(c) !== id);
+      setData(filtered);
+      onCardChange?.(filtered);
+      return;
+    }
+
     onCardChange?.(updated);
+  };
+
+  const handleDelete = (globalIndex: number) => {
+    const card = data[globalIndex];
+    const id = getCardId(card);
+
+    setData((prev) => prev.filter((_, i) => i !== globalIndex));
+
+    setIsFav((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(id);
+      return newMap;
+    });
   };
 
   const handleRefresh = async (globalIndex: number, city: string) => {
     const card = data[globalIndex];
     const id = getCardId(card);
-
     setLoadingCard((prev) => new Map(prev).set(id, true));
+
     try {
       const result = await getHourlyForecast(city);
       const date = new Date(result.list[0].dt * 1000);
@@ -137,30 +163,6 @@ export default function WeatherCard({
     }
   };
 
-  const handleToggleExpand = (globalIndex: number) => {
-    setExpandedIndex((prev) => (prev === globalIndex ? null : globalIndex));
-  };
-
-  const handleDelete = (globalIndex: number) => {
-    const card = data[globalIndex];
-    const id = getCardId(card);
-
-    setData((prev) => prev.filter((_, i) => i !== globalIndex));
-
-    setIsFav((prev) => {
-      const newMap = new Map(prev);
-      newMap.delete(id);
-      return newMap;
-    });
-  };
-
-  const handlePageChange = (_: unknown, value: number) => {
-    setPage(value);
-    setExpandedIndex(null);
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
   if (!data.length) return <div>No data</div>;
 
   return (
@@ -172,111 +174,114 @@ export default function WeatherCard({
           const expanded = expandedIndex === globalIndex;
 
           return (
-            <div key={id}>
-              <CardItem>
+            <CardItem key={id}>
+              <Box
+                sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}
+              >
+                <Typography variant="body2">{day.city}</Typography>
+                <Typography variant="body2">{day.country}</Typography>
+              </Box>
+
+              <Box textAlign="center">
+                <Typography variant="body1">{day.time}</Typography>
+
                 <Box
                   sx={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    mb: 1,
+                    justifyContent: 'space-around',
+                    my: 1,
                   }}
                 >
-                  <Typography variant="body2">{day.city}</Typography>
-                  <Typography variant="body2">{day.country}</Typography>
-                </Box>
-
-                <Box textAlign="center">
-                  <Typography variant="body1">{day.time}</Typography>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-around',
-                      my: 1,
-                    }}
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
                   >
-                    <Button
-                      size="small"
-                      variant="contained"
-                      sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
-                    >
-                      Hourly forecast
-                    </Button>
-                    <Button
-                      size="medium"
-                      variant="contained"
-                      sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
-                    >
-                      Weekly forecast
-                    </Button>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-evenly',
-                      mb: 1,
-                    }}
-                  >
-                    <Typography variant="caption">{day.date}</Typography>
-                    <Divider
-                      orientation="vertical"
-                      flexItem
-                      sx={{ backgroundColor: '#000000' }}
-                    />
-                    <Typography variant="caption">{day.weekday}</Typography>
-                  </Box>
-
-                  {loadingCard.get(id) ? (
-                    <CircularProgress sx={{ my: 3 }} />
-                  ) : (
-                    <>
-                      <Image
-                        src={`https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`}
-                        alt={day.weather.description}
-                        style={{ margin: '22px 0 15px' }}
-                        width={120}
-                        height={120}
-                      />
-                      <Typography variant="h2">{day.temp}°C</Typography>
-                    </>
-                  )}
-                </Box>
-
-                <CardActions>
-                  <RefreshIcon
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => handleRefresh(globalIndex, day.city)}
-                  />
-
-                  {isFav.get(id) ? (
-                    <FavoriteIcon
-                      style={{ cursor: 'pointer', color: 'red' }}
-                      onClick={() => handleFavourite(day)}
-                    />
-                  ) : (
-                    <FavoriteBorderOutlinedIcon
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleFavourite(day)}
-                    />
-                  )}
-
+                    Hourly forecast
+                  </Button>
                   <Button
                     size="medium"
                     variant="contained"
                     sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
-                    onClick={() => handleToggleExpand(globalIndex)}
                   >
-                    {expanded ? 'see less' : 'see more'}
+                    Weekly forecast
                   </Button>
+                </Box>
 
-                  <DeleteOutlineOutlinedIcon
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => handleDelete(globalIndex)}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-evenly',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="caption">{day.date}</Typography>
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ backgroundColor: '#000000' }}
                   />
-                </CardActions>
-              </CardItem>
-            </div>
+                  <Typography variant="caption">{day.weekday}</Typography>
+                </Box>
+
+                {loadingCard.get(id) ? (
+                  <CircularProgress sx={{ my: 3 }} />
+                ) : (
+                  <>
+                    <Image
+                      src={`https://openweathermap.org/img/wn/${day.weather.icon}@2x.png`}
+                      alt={day.weather.description}
+                      style={{ margin: '22px 0 15px' }}
+                      width={120}
+                      height={120}
+                    />
+                    <Typography variant="h2">{day.temp}°C</Typography>
+                  </>
+                )}
+              </Box>
+
+              <CardActions>
+                <RefreshIcon
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleRefresh(globalIndex, day.city)}
+                />
+
+                {isLoggedIn ? (
+                  isFav.get(id) ? (
+                    <FavoriteIcon
+                      style={{ cursor: 'pointer', color: 'red' }}
+                      onClick={() => handleFavouriteClick(day)}
+                    />
+                  ) : (
+                    <FavoriteBorderOutlinedIcon
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleFavouriteClick(day)}
+                    />
+                  )
+                ) : (
+                  <FavoriteBorderOutlinedIcon
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => alert('Please log in to save this card.')}
+                  />
+                )}
+
+                <Button
+                  size="medium"
+                  variant="contained"
+                  sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                  onClick={() =>
+                    setExpandedIndex(expanded ? null : globalIndex)
+                  }
+                >
+                  {expanded ? 'see less' : 'see more'}
+                </Button>
+
+                <DeleteOutlineOutlinedIcon
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDelete(globalIndex)}
+                />
+              </CardActions>
+            </CardItem>
           );
         })}
       </CardContainer>
@@ -291,7 +296,7 @@ export default function WeatherCard({
         count={pageTotal}
         page={page}
         style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
-        onChange={handlePageChange}
+        onChange={(_e, value) => setPage(value)}
       />
     </div>
   );
