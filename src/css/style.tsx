@@ -36,6 +36,14 @@ export const abomination = keyframes`
   100% { content: "About this project"; }
 `;
 
+export const abominationMenu = keyframes`
+  0% { content: "M"; }
+  15% { content: "Me"; }
+  30% { content: "Men"; }
+  45% { content: "Menu"; }
+  100% { content: "Menu"; }
+`;
+
 export const AnimatedTitle = styled(Typography)`
   position: absolute;
   width: 100%;
@@ -56,6 +64,26 @@ export const AnimatedTitle = styled(Typography)`
   }
 `;
 
+export const AnimatedMenuTitle = styled(Typography)`
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  fontsize: 45px;
+  color: #a9a9a9;
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    lineheight: 48px;
+    left: 10%;
+    top: 50%;
+
+    animation: ${abominationMenu} 7.5s linear 1 forwards;
+  }
+`;
+
 export const ContainerElement = styled(Container)`
   backgroundcolor: rgba(255, 255, 255, 0.85);
   borderradius: 24px;
@@ -66,9 +94,9 @@ export const ContainerElement = styled(Container)`
 
 export const BoxTitle = styled(Box)`
   position: relative;
-  width: 83%;
-  height: 175px;
-  margin: 7% auto;
+  width: 40%;
+  height: 50px;
+  margin: 0 auto 5%;
 `;
 
 export const TypographyTitle = styled(Typography)`
