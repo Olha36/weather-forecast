@@ -1,6 +1,5 @@
 'use client';
 
-import Avatar from '@mui/material/Avatar';
 import { Button } from '../ui/Button';
 import { Box } from '@mui/material';
 import Image from 'next/image';
