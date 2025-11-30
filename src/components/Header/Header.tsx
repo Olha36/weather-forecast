@@ -49,7 +49,7 @@ export default function Header() {
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         padding: '33px 0 0',
       }}
     >
@@ -95,15 +95,7 @@ export default function Header() {
           {isLoggedInLocal ? 'Log Out' : 'Sign In'}
         </Button>
 
-        <Avatar
-          alt="User Avatar"
-          src={
-            isLoggedInLocal
-              ? '/static/images/avatar/2.jpg'
-              : '/static/images/avatar/default.jpg'
-          }
-          style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-        />
+       
       </Box>
     </div>
   );
