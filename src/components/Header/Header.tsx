@@ -50,7 +50,7 @@ export default function Header() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '33px',
+        padding: '33px 0 0',
       }}
     >
       <Link href="/">

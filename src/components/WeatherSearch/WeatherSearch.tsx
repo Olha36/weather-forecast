@@ -76,10 +76,10 @@ export default function WeatherSearch({ onSearch }: WeatherSearchProps) {
         backgroundImage: `url(${background.src})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '595px',
+        height: '100%',
         width: '100%',
         color: 'white',
-        paddingTop: '100px',
+        padding: '5% 0'
       }}
     >
       <Typography variant="h1" sx={{ textAlign: 'center' }}>

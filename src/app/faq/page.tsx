@@ -62,7 +62,6 @@ export default function FAQ() {
             p: { xs: 4, sm: 6, md: 8 },
           }}
         >
-          {/* Title */}
           <BoxTitle>
             <AnimatedFaqTitle variant="h2" />
           </BoxTitle>
