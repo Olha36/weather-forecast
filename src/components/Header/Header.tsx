@@ -36,12 +36,12 @@ export default function Header() {
     }
   };
   const handleAddFavouritesClick = () => {
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       router.push('/favourite');
     } else {
       router.push('/auth/signin');
     }
-  }
+  };
 
   return (
     <div
@@ -56,12 +56,11 @@ export default function Header() {
       <Link href="/">
         <Image src={logo} alt="logo" style={{ cursor: 'pointer' }} />
       </Link>
-      <nav>
+      <nav style={{ display: 'flex', gap: '20px' }}>
         <Link href="/about">Who we are</Link>
-        <Link href="/contact" style={{ margin: '0 42px' }}>
-          Contacts
-        </Link>
+        <Link href="/contact">Contacts</Link>
         <Link href="/menu">Menu</Link>
+        <Link href="/faq">FAQ</Link>
       </nav>
       <Box style={{ display: 'flex', alignItems: 'center' }}>
         {isLoggedIn ? (
@@ -103,7 +102,7 @@ export default function Header() {
               ? '/static/images/avatar/2.jpg'
               : '/static/images/avatar/default.jpg'
           }
-          style={{ width: '50px', height: '50px' }}
+          style={{ width: '50px', height: '50px', cursor: 'pointer' }}
         />
       </Box>
     </div>

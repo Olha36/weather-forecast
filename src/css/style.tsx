@@ -44,6 +44,13 @@ export const abominationMenu = keyframes`
   100% { content: "Menu"; }
 `;
 
+export const abominationFaq = keyframes`
+  0% { content: "F"; }
+  25% { content: "FA"; }
+  50% { content: "FAQ"; }
+  100% { content: "FAQ"; }
+`;
+
 export const AnimatedTitle = styled(Typography)`
   position: absolute;
   width: 100%;
@@ -111,5 +118,12 @@ export const TypographyTitle = styled(Typography)`
 
   @media (max-width: 600px) {
     font-size: 16px;
+  }
+`;
+
+export const AnimatedFaqTitle = styled(Typography)`
+  &::after {
+    content: 'FAQ';
+    animation: ${abominationFaq} 0.5s linear forwards;
   }
 `;

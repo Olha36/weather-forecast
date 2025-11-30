@@ -83,7 +83,7 @@ export default function MenuComponent() {
           </MenuItem>
 
           <MenuItem>
-            <Link href="/">FAQ section</Link>
+            <Link href="/faq">FAQ section</Link>
             <p>
               Need assistance? Explore FAQs or reach out to the support team
               directly.
