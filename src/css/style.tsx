@@ -83,10 +83,10 @@ export const AnimatedMenuTitle = styled(Typography)`
     content: '';
     width: 100%;
     height: 100%;
-    lineheight: 48px;
-    left: 10%;
+    line-height: 48px;
+    // left: 10%;
     top: 50%;
-
+    text-align: center;
     animation: ${abominationMenu} 7.5s linear 1 forwards;
   }
 `;
@@ -101,7 +101,6 @@ export const ContainerElement = styled(Container)`
 
 export const BoxTitle = styled(Box)`
   position: relative;
-  width: 40%;
   height: 50px;
   margin: 0 auto 5%;
 `;
@@ -122,13 +121,13 @@ export const TypographyTitle = styled(Typography)`
 `;
 
 export const AnimatedFaqTitle = styled(Typography)`
- position: absolute;
+  position: absolute;
   width: 100%;
   height: 50%;
   fontsize: 45px;
   color: #a9a9a9;
+  text-align: center;
 
- 
   &::after {
     content: 'FAQ';
     animation: ${abominationFaq} 4.5s linear forwards;
