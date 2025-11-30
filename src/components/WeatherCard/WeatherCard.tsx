@@ -88,6 +88,10 @@ export default function WeatherCard({
     }
   }, [weather.data, isStatic]);
 
+  useEffect(() => {
+    onCardChange?.(currentCards);
+  }, [page, data]);
+
   const handleFavouriteClick = (card: FormattedForecastItem) => {
     if (!isLoggedIn) {
       alert('Please log in to save cards to favourites.');
