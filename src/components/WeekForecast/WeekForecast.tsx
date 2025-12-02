@@ -11,11 +11,16 @@ export default function WeekForecast() {
           backgroundColor: '#E8E8E8',
           display: 'flex',
           flexDirection: 'column',
-          // alignItems: 'center',
           width: '1300px',
           margin: '40px auto',
           borderRadius: '16px',
           padding: '16px',
+          '@media (max-width: 768px)': {
+            width: '100%',
+          },
+          '@media (max-width: 1024px)': {
+            width: '100%',
+          },
         }}
       >
         <Typography variant="subtitle2" style={{ margin: '26px 0 0 42px' }}>
