@@ -23,14 +23,24 @@ export default function WeekForecast() {
           },
         }}
       >
-        <Typography variant="subtitle2" style={{ margin: '26px 0 0 42px' }}>
+        <Typography
+          variant="subtitle2"
+          sx={(theme) => ({
+            margin: '26px 0 0 42px',
+            [theme.breakpoints.down('sm')]: {
+              gridTemplateColumns: '1fr',
+              textAlign: 'center',
+              margin: 0
+            },
+          })}
+        >
           6-day forecast
         </Typography>
         {data.map((day, index) => {
           return (
             <Box
               key={index}
-              sx={{
+              sx={(theme) => ({
                 width: '100%',
                 display: 'grid',
                 gridTemplateColumns: '1fr  1fr 1fr',
@@ -41,7 +51,11 @@ export default function WeekForecast() {
                 mb: 1.5,
                 columnGap: 2,
                 boxSizing: 'border-box',
-              }}
+                [theme.breakpoints.down('sm')]: {
+                  gridTemplateColumns: '1fr',
+                  textAlign: 'center',
+                },
+              })}
             >
               <Typography variant="caption">
                 {day.weekday}, {day.date}

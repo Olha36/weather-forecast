@@ -25,6 +25,7 @@ import {
 import WeatherDetails from '../WeatherDetails/WeatherDetails';
 import { useWeather } from '@/lib/hooks/useWeather';
 import { useAuthStore } from '@/lib/utils/authStore';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 // styling
 const CardItem = styled('div')(() => ({
@@ -57,6 +58,9 @@ export default function WeatherCard({
   const isStatic = city === '';
   const weather = useWeather(city);
   const { isLoggedIn } = useAuthStore();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [data, setData] = useState<FormattedForecastItem[]>(
     isStatic ? initialData ?? [] : []
@@ -299,8 +303,11 @@ export default function WeatherCard({
       <Pagination
         count={pageTotal}
         page={page}
-        style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
         onChange={(_e, value) => setPage(value)}
+        siblingCount={isMobile ? 0 : 1}
+        boundaryCount={1}
+        
+        style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
       />
     </div>
   );

@@ -14,14 +14,19 @@ const Img = styled(Image)(() => ({
 export default function Footer() {
   return (
     <Box
-      style={{
+      sx={(theme) => ({
         backgroundColor: '#FFB36C',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
         padding: '50px 0',
+        [theme.breakpoints.down('sm')]: {
+          flexDirection: 'column',
+          textAlign: 'center',
+          gap: '20px',
+        },
         // marginTop: '20px',
-      }}
+      })}
     >
       <Img src={footerLogo} alt="footer logo" />
       <Box>

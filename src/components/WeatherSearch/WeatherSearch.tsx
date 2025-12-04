@@ -1,4 +1,5 @@
 'use client';
+
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Divider, IconButton } from '@mui/material';
 import InputBase from '@mui/material/InputBase';
@@ -13,26 +14,32 @@ interface WeatherSearchProps {
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  width: '625px',
-  margin: '20px auto',
-}));
+  borderRadius: Number(theme.shape.borderRadius) * 3,
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  width: '100%',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1),
-    paddingRight: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
+  backgroundColor: alpha(theme.palette.common.white, 0.18),
+  backdropFilter: 'blur(3px)',
+  width: '625px',
+  maxWidth: '90%',
+  margin: '20px auto',
+  paddingLeft: '12px',
+  [theme.breakpoints.down('sm')]: {
     width: '100%',
   },
 }));
 
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'white',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1.5),
+    paddingRight: `calc(1em + ${theme.spacing(5)})`,
+    fontSize: '1rem',
+  },
+}));
+
+// -------------------------------
+// Component
+// -------------------------------
 export default function WeatherSearch({ onSearch }: WeatherSearchProps) {
   const [city, setCity] = useState('');
 
@@ -76,41 +83,80 @@ export default function WeatherSearch({ onSearch }: WeatherSearchProps) {
         backgroundImage: `url(${background.src})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '100%',
+
         width: '100%',
         color: 'white',
-        padding: '5% 0'
+        py: { xs: 4, md: 8 },
       }}
     >
-      <Typography variant="h1" sx={{ textAlign: 'center' }}>
+      <Typography
+        variant="h2"
+        sx={(theme) => ({
+          textAlign: 'center',
+          fontWeight: 700,
+          mb: 4,
+          textShadow: '0 4px 12px rgba(0,0,0,0.6)',
+          [theme.breakpoints.down('sm')]: {
+            fontSize: '1.8rem',
+            mb: 3,
+          },
+        })}
+      >
         Weather dashboard
       </Typography>
 
-      <div
-        style={{
+      <Box
+        sx={(theme) => ({
           display: 'flex',
-          justifyContent: 'space-evenly',
-          maxWidth: '613px',
-          margin: '0 auto',
+          justifyContent: 'center',
           alignItems: 'center',
-          padding: '80px 0',
-        }}
+          maxWidth: '650px',
+          mx: 'auto',
+          px: 2,
+          py: 4,
+          gap: 4,
+          [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column',
+            textAlign: 'center',
+            gap: 2,
+            py: 2,
+          },
+        })}
       >
-        <p>
-          Create your personal list of <br /> favorite cities and always be{' '}
-          <br /> aware of the weather.
-        </p>
+        <Typography sx={{ fontSize: '1.1rem', lineHeight: 1.5 }}>
+          Create your personal list of <br />
+          favorite cities and always <br />
+          be aware of the weather.
+        </Typography>
+
+        {/* DIVIDER */}
         <Divider
           orientation="vertical"
           flexItem
-          sx={{ marginX: 2, backgroundColor: 'white' }}
+          sx={(theme) => ({
+            borderColor: 'rgba(255,255,255,0.7)',
+            height: '100px',
+            mx: 2,
+            [theme.breakpoints.down('sm')]: {
+              position: 'absolute',
+              margin: 0,
+              left: '9%',
+            },
+          })}
         />
-        <div className="weather-date">
-          <p>{monthYear}</p>
-          <p>{formattedDay}</p>
-        </div>
-      </div>
 
+        {/* RIGHT DATE BLOCK */}
+        <Box>
+          <Typography sx={{ fontSize: '1.3rem', fontWeight: 600 }}>
+            {monthYear}
+          </Typography>
+          <Typography sx={{ fontSize: '1.2rem', mt: 1 }}>
+            {formattedDay}
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* SEARCH BAR */}
       <Search>
         <StyledInputBase
           placeholder="Search location…"
@@ -121,10 +167,12 @@ export default function WeatherSearch({ onSearch }: WeatherSearchProps) {
         <IconButton
           sx={{
             position: 'absolute',
-            right: 0,
-            top: 0,
-            height: '100%',
+            right: 4,
+            top: '50%',
+            transform: 'translateY(-50%)',
             color: 'white',
+            width: '40px',
+            height: '40px',
           }}
           onClick={handleSearch}
         >

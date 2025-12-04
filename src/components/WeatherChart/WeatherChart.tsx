@@ -53,7 +53,7 @@ export default function WeatherChart({ hourlyData }: WeatherChartProps) {
       title: {
         display: true,
         text: `Hourly forecast for ${hourlyData[0].city}`,
-        // align: 'center',
+
         align: 'start',
         color: '#333',
         font: {
