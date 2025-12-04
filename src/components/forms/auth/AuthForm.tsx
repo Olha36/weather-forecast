@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
 import {
   Container,
-  Header,
   Content,
   Footer,
+  Header,
 } from '@/components/forms/auth/AuthForm.style';
+import React, { ReactNode } from 'react';
 import { Card } from '../../ui/Card';
 
 interface AuthContainerProps {

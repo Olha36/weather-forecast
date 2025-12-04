@@ -1,11 +1,11 @@
 'use server';
-import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
 import {
-  registerUserService,
   loginUserService,
+  registerUserService,
 } from '../services/auth-services';
 
 export type StrapiError = {
@@ -41,7 +41,7 @@ export type FormStateLogin = {
 };
 
 const config = {
-  maxAge: 60 * 60 * 24 * 7, 
+  maxAge: 60 * 60 * 24 * 7,
   path: '/',
   domain: process.env.HOST ?? 'localhost',
   httpOnly: true,
@@ -124,7 +124,10 @@ const schemaLogin = z.object({
     }),
 });
 
-export async function loginUserAction(prevState: FormStateLogin, formData: FormData) {
+export async function loginUserAction(
+  prevState: FormStateLogin,
+  formData: FormData
+) {
   const validatedFields = schemaLogin.safeParse({
     identifier: formData.get('identifier'),
     password: formData.get('password'),

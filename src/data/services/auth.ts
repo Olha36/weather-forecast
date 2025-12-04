@@ -1,6 +1,6 @@
 import { getStrapiURL } from '@/lib/utils/utils';
-import type { TStrapiResponse } from '@/types/TStrapiResponse';
 import type { TImage } from '@/types/TImage';
+import type { TStrapiResponse } from '@/types/TStrapiResponse';
 
 export type TRegisterUser = {
   username: string;

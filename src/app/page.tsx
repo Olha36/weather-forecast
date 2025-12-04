@@ -1,16 +1,17 @@
-import Link from 'next/link';
-import styles from './page.module.css';
+// import Footer from '@/components/Footer/Footer';
+// import Header from '@/components/Header/Header';
+// import Nature from '@/components/Nature/Nature';
+// import Weather from '@/components/Weather/Weather';
+import HomeComponent from "@/components/Home/Home";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <Link href="/auth/signin">
-        <button>Sign In</button>
-      </Link>
-
-      <Link href="/auth/signup">
-        <button>Sign Up</button>
-      </Link>
-    </div>
+    <>
+      {/* <Header />
+      <Weather />
+      <Nature />
+      <Footer /> */}
+      <HomeComponent />
+    </>
   );
 }
