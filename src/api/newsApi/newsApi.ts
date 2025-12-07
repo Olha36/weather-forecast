@@ -1,14 +1,8 @@
-const NEWS_API_KEY =
-  process.env.NEWS_API_KEY || '1ae02c4bf69a4a1882b8019165404a8f';
+// const NEWS_API_KEY =
+//   process.env.NEWS_API_KEY || '11bfcc559649c4651111ef8592c8108d';
 
 export const getNews = async () => {
-  const result = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${NEWS_API_KEY}`
-  );
-
-  if (!result.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
+  const result = await fetch('/api/news');
+  if (!result.ok) throw new Error('Failed to fetch data');
   return result.json();
 };

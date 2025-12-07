@@ -1,5 +1,4 @@
-import { getNews } from '@/api/newsApi/newsApi';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface NewsArticle {
   title: string;
@@ -7,42 +6,45 @@ export interface NewsArticle {
   url?: string;
 }
 
-interface NewsApiResponse {
+interface GNewsResponse {
   articles: {
     title: string;
-    urlToImage?: string;
+    description?: string;
+    url: string;
+    image?: string;
   }[];
 }
 
 export const useNews = () => {
   const [data, setData] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchNews = async () => {
       try {
         setLoading(true);
-        const result: NewsApiResponse = await getNews();
+        const res = await fetch('/api/news');
+        if (!res.ok) throw new Error('Failed to fetch data');
 
-        const newsData: NewsArticle[] = result.articles.map((item) => ({
-          title: item.title,
-          image: item.urlToImage,
+        const result: GNewsResponse = await res.json();
+
+        const newsData: NewsArticle[] = result.articles.map((a) => ({
+          title: a.title,
+          image: a.image,
+          url: a.url,
         }));
 
         setData(newsData);
       } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('Unknown error occurred');
-        }
+        if (err instanceof Error) setError(err.message);
+        else setError('Unknown error occurred');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchNews();
   }, []);
 
   return { data, loading, error };
