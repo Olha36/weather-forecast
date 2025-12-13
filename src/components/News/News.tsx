@@ -13,7 +13,7 @@ export default function News() {
   return (
     <Box>
       <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-        Top business headlines in the US right now
+        Top headlines in the US right now
       </Typography>
 
       <Box
