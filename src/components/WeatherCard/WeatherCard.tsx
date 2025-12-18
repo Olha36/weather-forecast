@@ -26,6 +26,8 @@ import WeatherDetails from '../WeatherDetails/WeatherDetails';
 import { useWeather } from '@/lib/hooks/useWeather';
 import { useAuthStore } from '@/lib/utils/authStore';
 import { useMediaQuery, useTheme } from '@mui/material';
+import WeatherChart from '../WeatherChart/WeatherChart';
+import WeekForecast from '../WeekForecast/WeekForecast';
 
 // styling
 const CardItem = styled('div')(() => ({
@@ -71,6 +73,12 @@ export default function WeatherCard({
   const [isFav, setIsFav] = useState<Map<string, boolean>>(new Map());
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [page, setPage] = useState(1);
+  const [selectedCityData, setSelectedCityData] = useState<
+    FormattedForecastItem[] | null
+  >(null);
+  const [weekForecast, setWeekForecast] = useState<
+    FormattedForecastItem[] | null
+  >(null);
 
   const cardPerPage = 3;
   const startIndex = (page - 1) * cardPerPage;
@@ -171,6 +179,93 @@ export default function WeatherCard({
     }
   };
 
+  const handleHourlyForecast = async (city: string) => {
+    try {
+      const result = await getHourlyForecast(city);
+
+      const formattedHourly: FormattedForecastItem[] = result.list.map(
+        (item: any) => {
+          const date = new Date(item.dt * 1000);
+
+          return {
+            city: result.city.name,
+            country: result.city.country,
+            date: date.toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }),
+            weekday: date.toLocaleDateString('en-US', { weekday: 'long' }),
+            time: date.toLocaleTimeString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            temp: Math.round(item.main.temp),
+            temp_min: Math.round(item.main.temp_min),
+            temp_max: Math.round(item.main.temp_max),
+            feels_like: Math.round(item.main.feels_like),
+            humidity: item.main.humidity,
+            speed: item.wind.speed,
+            gust: item.wind.gust,
+            weather: item.weather[0],
+          };
+        }
+      );
+
+      setSelectedCityData(formattedHourly);
+    } catch (e) {
+      console.error('Failed to load hourly forecast', e);
+    }
+  };
+
+  const handleWeeklyForecast = async (city: string) => {
+    try {
+      const result = await getHourlyForecast(city);
+
+      const dailyMap = new Map<string, FormattedForecastItem>();
+
+      result.list.forEach((item: any) => {
+        const dateObj = new Date(item.dt * 1000);
+        const dayKey = dateObj.toDateString();
+
+        if (!dailyMap.has(dayKey)) {
+          dailyMap.set(dayKey, {
+            city: result.city.name,
+            country: result.city.country,
+            date: dateObj.toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }),
+            weekday: dateObj.toLocaleDateString('en-US', {
+              weekday: 'long',
+            }),
+            time: dateObj.toLocaleTimeString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            temp: Math.round(item.main.temp),
+            temp_min: Math.round(item.main.temp_min),
+            temp_max: Math.round(item.main.temp_max),
+            feels_like: Math.round(item.main.feels_like),
+            humidity: item.main.humidity,
+            speed: item.wind.speed,
+            gust: item.wind.gust,
+            weather: item.weather[0],
+          });
+        }
+      });
+
+    
+      const formattedWeek = Array.from(dailyMap.values()).slice(0, 7);
+
+      setWeekForecast(formattedWeek);
+      setSelectedCityData(null);
+    } catch (e) {
+      console.error('Failed to load weekly forecast', e);
+    }
+  };
+
   if (!data.length) return <div>No data</div>;
 
   return (
@@ -204,6 +299,7 @@ export default function WeatherCard({
                     size="small"
                     variant="contained"
                     sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                    onClick={() => handleHourlyForecast(day.city)}
                   >
                     Hourly forecast
                   </Button>
@@ -211,6 +307,7 @@ export default function WeatherCard({
                     size="medium"
                     variant="contained"
                     sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
+                    onClick={() => handleWeeklyForecast(day.city)}
                   >
                     Weekly forecast
                   </Button>
@@ -306,9 +403,12 @@ export default function WeatherCard({
         onChange={(_e, value) => setPage(value)}
         siblingCount={isMobile ? 0 : 1}
         boundaryCount={1}
-        
         style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
       />
+
+      {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
+
+      {weekForecast && <WeekForecast />}
     </div>
   );
 }

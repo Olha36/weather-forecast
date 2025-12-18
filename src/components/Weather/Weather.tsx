@@ -1,17 +1,12 @@
 'use client';
 import { useState } from 'react';
 import WeatherCard from '../WeatherCard/WeatherCard';
-import WeatherChart from '../WeatherChart/WeatherChart';
 import WeatherSearch from '../WeatherSearch/WeatherSearch';
-import WeekForecast from '../WeekForecast/WeekForecast';
 import News from '../News/News';
 import { FormattedForecastItem, NewDayProps } from '@/types/WeatherTypes.js';
 
 export default function Home() {
-  const [selectedCityData, setSelectedCityData] = useState<
-    FormattedForecastItem[] | null
-  >(null);
-  const [city, setCity] = useState('Kyiv'); 
+  const [city, setCity] = useState('Kyiv');
 
   const handleCardChange = (cityData: NewDayProps | NewDayProps[]) => {
     const dataArray = Array.isArray(cityData) ? cityData : [cityData];
@@ -31,7 +26,6 @@ export default function Home() {
       visibility: 0,
       weather: item.weather,
     }));
-    setSelectedCityData(formattedData);
   };
 
   const handleSearch = (newCity: string) => {
@@ -42,9 +36,6 @@ export default function Home() {
     <main style={{ padding: '16px' }}>
       <WeatherSearch onSearch={handleSearch} />
       <WeatherCard onCardChange={handleCardChange} city={city} />
-      {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
-   
-      <WeekForecast />
       <News />
     </main>
   );
