@@ -63,4 +63,4 @@ npm install
 npm run dev
 
 
-add .env.local with NEXT_PUBLIC_STRAPI_URL=https://bright-luck-8845c17382.strapiapp.com
+add .env.local with NEXT_PUBLIC_STRAPI_URL=https://peaceful-confidence-88c314f5a2.strapiapp.com and NEWS_API_KEY=11bfcc559649c4651111ef8592c8108d
