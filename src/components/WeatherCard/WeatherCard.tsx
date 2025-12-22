@@ -29,7 +29,6 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import WeatherChart from '../WeatherChart/WeatherChart';
 import WeekForecast from '../WeekForecast/WeekForecast';
 
-// styling
 const CardItem = styled('div')(() => ({
   width: '320px',
   borderRadius: '20px',
@@ -79,6 +78,8 @@ export default function WeatherCard({
   const [weekForecast, setWeekForecast] = useState<
     FormattedForecastItem[] | null
   >(null);
+  const [showHourlyChart, setShowHourlyChart] = useState(false);
+  const [hourlyChartRequested, setHourlyChartRequested] = useState(false);
 
   const cardPerPage = 3;
   const startIndex = (page - 1) * cardPerPage;
@@ -103,6 +104,12 @@ export default function WeatherCard({
   useEffect(() => {
     onCardChange?.(currentCards);
   }, [page, data]);
+
+  useEffect(() => {
+    if (hourlyChartRequested && currentCards.length > 0) {
+      handleHourlyForecast(currentCards[0].city);
+    }
+  }, [hourlyChartRequested, page, data]);
 
   const handleFavouriteClick = (card: FormattedForecastItem) => {
     if (!isLoggedIn) {
@@ -183,10 +190,19 @@ export default function WeatherCard({
     try {
       const result = await getHourlyForecast(city);
 
-      const formattedHourly: FormattedForecastItem[] = result.list.map(
-        (item: any) => {
-          const date = new Date(item.dt * 1000);
+      const visibleDates = currentCards.map((c) => c.date);
 
+      const formattedHourly: FormattedForecastItem[] = result.list
+        .filter((item: any) => {
+          const dateStr = new Date(item.dt * 1000).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          });
+          return visibleDates.includes(dateStr);
+        })
+        .map((item: any) => {
+          const date = new Date(item.dt * 1000);
           return {
             city: result.city.name,
             country: result.city.country,
@@ -199,6 +215,7 @@ export default function WeatherCard({
             time: date.toLocaleTimeString('en-GB', {
               hour: '2-digit',
               minute: '2-digit',
+              hour12: false,
             }),
             temp: Math.round(item.main.temp),
             temp_min: Math.round(item.main.temp_min),
@@ -206,13 +223,13 @@ export default function WeatherCard({
             feels_like: Math.round(item.main.feels_like),
             humidity: item.main.humidity,
             speed: item.wind.speed,
-            gust: item.wind.gust,
+            gust: item.wind.gust ?? 0,
             weather: item.weather[0],
           };
-        }
-      );
+        });
 
       setSelectedCityData(formattedHourly);
+      setShowHourlyChart(true); // <-- show chart only after click
     } catch (e) {
       console.error('Failed to load hourly forecast', e);
     }
@@ -256,7 +273,6 @@ export default function WeatherCard({
         }
       });
 
-    
       const formattedWeek = Array.from(dailyMap.values()).slice(0, 7);
 
       setWeekForecast(formattedWeek);
@@ -299,10 +315,14 @@ export default function WeatherCard({
                     size="small"
                     variant="contained"
                     sx={{ bgcolor: '#FFB36C', fontSize: '10px' }}
-                    onClick={() => handleHourlyForecast(day.city)}
+                    onClick={() => {
+                      setHourlyChartRequested(true); // mark as requested
+                      handleHourlyForecast(day.city); // fetch data
+                    }}
                   >
                     Hourly forecast
                   </Button>
+
                   <Button
                     size="medium"
                     variant="contained"
@@ -406,7 +426,9 @@ export default function WeatherCard({
         style={{ display: 'grid', justifyContent: 'center', margin: '2% 0' }}
       />
 
-      {selectedCityData && <WeatherChart hourlyData={selectedCityData} />}
+      {showHourlyChart && selectedCityData && (
+        <WeatherChart hourlyData={selectedCityData} />
+      )}
 
       {weekForecast && <WeekForecast />}
     </div>
